@@ -47,11 +47,12 @@ router.post("/admin/login", (req, res) => {
   );
 });
 router.post("/admin", (req, res) => {
-  hash(req.body.password, 10, (err, hash) => {
+  epoch = new Date().getMilliseconds().toString(16);
+  hash(req.body.password, epoch, (err, hash) => {
     if (err) res.sendStatus(500);
     database.query(
       `INSERT INTO admins (admin_email, admin_password) VALUES ( '${req.body.email}', '${hash}' )`,
-      (err, rows) => {
+      (err) => {
         if (err) res.sendStatus(500);
         else res.status(200).send(true);
       }
